@@ -1,0 +1,8 @@
+{
+  "name": "cordova-plugin-send-email",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EstrategicaEasyForm/cordova-plugin-send-email.git"
+  },
+  "version": "1.2.0"
+}
