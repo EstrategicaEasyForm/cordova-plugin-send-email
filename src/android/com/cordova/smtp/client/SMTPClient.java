@@ -29,11 +29,11 @@ public class SMTPClient extends CordovaPlugin {
 			JSONArray attachments = json.getJSONArray("attachments");
 			if (attachments != null) {
 				for (int i = 0; i < attachments.length(); i++) {
-					String fileFullName = attachments.getString(i);
-					if (fileFullName.contains(":")) {
-						fileFullName = fileFullName.split(":")[1];
+					JSONObject pdf = attachments.getString(i);
+					if (pdf.filename() != null) {
+						m.addAttachment(pdf.filename(),pdf.base64());
 					}
-					m.addAttachment(fileFullName);
+					
 				}
 			}
 			m.send();
