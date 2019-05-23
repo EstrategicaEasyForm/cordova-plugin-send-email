@@ -31,7 +31,7 @@ public class SMTPClient extends CordovaPlugin {
 				for (int i = 0; i < attachments.length(); i++) {
 					JSONObject pdfJson = attachments.getString(i);
 					if (!pdfJson.isNull("filename")) {
-						m.addAttachment(pdfJson.get("filename"),pdfJson.get("base64"));
+						m.addAttachment(pdfJson.getString("filename"),pdfJson.getString("dataDirectory"));
 					}
 				}
 			}
