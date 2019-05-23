@@ -104,12 +104,13 @@ public class Mail extends javax.mail.Authenticator {
 
             // setup message body
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(_body);
+            //messageBodyPart.setText(_body);
+			messageBodyPart.setContent(_body,"text/html; charset=utf-8"); 
             _multipart.addBodyPart(messageBodyPart);
 
             // Put parts in message
-            // msg.setContent(_multipart);
-			msg.setContent(_body,"text/html; charset=utf-8"); 
+             msg.setContent(_multipart);
+			//msg.setContent(_body,"text/html; charset=utf-8"); 
 
             // send email
             Transport.send(msg);
