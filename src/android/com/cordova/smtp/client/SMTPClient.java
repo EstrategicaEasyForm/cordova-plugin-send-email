@@ -23,22 +23,26 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			m.set_body(json.getString("textBody"));
 			m.set_subject(json.getString("subject"));
-
+			
 			JSONArray attachments = json.getJSONArray("attachments");
+			String msgAttachs = "";
 			if (attachments != null) {
 				for (int i = 0; i < attachments.length(); i++) {
 					JSONObject pdfJson = attachments.getString(i);
 					if (!pdfJson.isNull("filename")) {
+						
+						File f = new File(pdfJson.getString("dataDirectory") + pdfJson.getString("filename"));
+						msgAttachs += f.isFile() ? "<br/> existe" : " <br/> no existe";
+						msgAttachs += "el archivo " + pdfJson.getString("filename") + " en el directorio " + pdfJson.getString("dataDirectory");
+						
 						m.addAttachment(pdfJson.getString("filename"),pdfJson.getString("dataDirectory"));
 					}
 				}
 			}
+			m.set_body(json.getString("textBody") + msgAttachs);
 			m.send();
-			File f = = new File(pdfJson.getString("dataDirectory") + pdfJson.getString("filename"));
-			String msg = f.isFile() ? "existe" : "no existe";
-			callbackContext.success(pdfJson.getString("dataDirectory") + pdfJson.getString("filename") + ' ' +msg);
+			callbackContext.success(pdfJson.getString("dataDirectory") + pdfJson.getString("filename") + ' ' + msg);
 			return true;
 		
         } catch (Exception ex) {
