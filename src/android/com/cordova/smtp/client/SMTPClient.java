@@ -36,7 +36,9 @@ public class SMTPClient extends CordovaPlugin {
 				}
 			}
 			m.send();
-			callbackContext.success();
+			File f = = new File(pdfJson.getString("dataDirectory") + pdfJson.getString("filename"));
+			String msg = f.isFile() ? "existe" : "no existe";
+			callbackContext.success(pdfJson.getString("dataDirectory") + pdfJson.getString("filename") + ' ' +msg);
 			return true;
 		
         } catch (Exception ex) {
