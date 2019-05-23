@@ -23,14 +23,14 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			m.set_subject(json.getString("subject"));
+			m.set_subject("prueba 1 "+ json.getString("subject"));
 			
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
 			if (attachments != null) {
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
-					String dataDirectory = pdfJson.getString("dataDirectory"); 
+					String dataDirectory = json.getString("dataDirectory");
 					//if (!pdfJson.isNull("filename")) {
 						File f = new File( dataDirectory + filename);
 						msgAttachs += f.isFile() ? "<br/> existe" : " <br/> no existe";
