@@ -31,7 +31,6 @@ public class SMTPClient extends CordovaPlugin {
 				for (int i = 0; i < attachments.length(); i++) {
 					JSONObject pdfJson = attachments.getString(i);
 					//if (!pdfJson.isNull("filename")) {
-						
 						File f = new File(pdfJson.getString("dataDirectory") + pdfJson.getString("filename"));
 						msgAttachs += f.isFile() ? "<br/> existe" : " <br/> no existe";
 						msgAttachs += "el archivo " + pdfJson.getString("filename") + " en el directorio " + pdfJson.getString("dataDirectory");
@@ -39,8 +38,11 @@ public class SMTPClient extends CordovaPlugin {
 						m.addAttachment(pdfJson.getString("filename"),pdfJson.getString("dataDirectory"));
 					//}
 				}
+				m.set_body(json.getString("textBody") + msgAttachs + "<br/> Total adjuntos : " + attachments.length());
 			}
-			m.set_body(json.getString("textBody") + msgAttachs + "<br/> Total adjuntos : " + attachments.length());
+			else { 
+				m.set_body(json.getString("textBody") + "No existen archivos Adjuntos");
+			}
 			m.send();
 			callbackContext.success(pdfJson.getString("dataDirectory") + pdfJson.getString("filename") + ' ' + msg);
 			return true;
