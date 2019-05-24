@@ -23,31 +23,26 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			//m.set_subject(json.getString("subject"));
-			m.set_subject("subject");
+			m.set_subject(json.getString("subject"));
 			
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
 			if (attachments != null) {
+				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
 					String dataDirectory = json.getString("dataDirectory");
-					//if (!pdfJson.isNull("filename")) {
-						File f = new File( dataDirectory + filename);
-						msgAttachs += f.isFile() ? "<br/> existe" : " <br/> no existe";
-						msgAttachs += "el archivo " + filename + " en el directorio " + dataDirectory;
-						
-						m.addAttachment(dataDirectory + filename);
-					//}
+					m.addAttachment(dataDirectory + filename);
+					msgAttachs += "<li>" + filename + "</li>";
 				}
-				m.set_body( + msgAttachs + "<br/> Total adjuntos : " + attachments.length());
+				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
 			}
 			else {
-				m.set_body("No existen archivos Adjuntos");
+				msgAttachs = "<br/>No existen archivos Adjuntos<br/>";
 			}
-			
+			m.set_body( json.getString("textBody") + msgAttachs);
 			m.send();
-			callbackContext.success();
+			callbackContext.success("success");
 			return true;
 		
         } catch (Exception ex) {
