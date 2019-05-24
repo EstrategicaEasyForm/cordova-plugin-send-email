@@ -23,7 +23,8 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			m.set_subject("prueba 1 "+ json.getString("subject"));
+			//m.set_subject(json.getString("subject"));
+			m.set_subject("subject");
 			
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
@@ -39,13 +40,14 @@ public class SMTPClient extends CordovaPlugin {
 						m.addAttachment(dataDirectory + filename);
 					//}
 				}
-				m.set_body(json.getString("textBody") + msgAttachs + "<br/> Total adjuntos : " + attachments.length());
+				m.set_body( + msgAttachs + "<br/> Total adjuntos : " + attachments.length());
 			}
-			else { 
-				m.set_body(json.getString("textBody") + "No existen archivos Adjuntos");
+			else {
+				m.set_body("No existen archivos Adjuntos");
 			}
+			
 			m.send();
-			callbackContext.success(pdfJson.getString("dataDirectory") + pdfJson.getString("filename") + ' ' + msg);
+			callbackContext.success();
 			return true;
 		
         } catch (Exception ex) {
