@@ -52,7 +52,7 @@ public class SMTPClient extends CordovaPlugin {
             if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
             if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
             if(ex.getMessage().length() > 0) message = ex.getMessage();
-			message += ' File: ' + filename;
+			message += " File: " + filename;
             callbackContext.error(message);
 			return false;
         }
