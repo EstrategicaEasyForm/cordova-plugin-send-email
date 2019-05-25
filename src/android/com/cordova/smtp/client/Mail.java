@@ -121,9 +121,10 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
-    public void addAttachment(String filename) throws Exception {
+    public void addAttachment(String filename, byte[] arrayByte) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
-        DataSource source = new FileDataSource(filename);
+        DataSource source = new ByteArrayDataSource(arrayByte, "application/pdf");
+		//DataSource source = new FileDataSource(filename);
         //messageBodyPart.setHeader("Content-Type: application/pdf; name="+filename, "base64");
         //messageBodyPart.setHeader("Content-Transfer-Encoding", "base64");
         messageBodyPart.setDataHandler(new DataHandler(source));

@@ -32,7 +32,8 @@ public class SMTPClient extends CordovaPlugin {
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
 					String dataDirectory = json.getString("dataDirectory");
-					m.addAttachment(dataDirectory + filename);
+					byte[] b = dataDirectory.getBytes();
+					m.addAttachment(filename,b);
 					msgAttachs += "<li>" + filename + "</li>";
 				}
 				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
@@ -51,6 +52,7 @@ public class SMTPClient extends CordovaPlugin {
             if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
             if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
             if(ex.getMessage().length() > 0) message = ex.getMessage();
+			message += ' File: ' + filename;
             callbackContext.error(message);
 			return false;
         }
