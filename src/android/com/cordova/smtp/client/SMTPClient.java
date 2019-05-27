@@ -28,6 +28,8 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_from(json.getString("emailFrom"));
 			m.set_subject(json.getString("subject") + "V1");
 			
+			
+			String dataDirectory = json.getString("dataDirectory");
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
 			String message = "";
@@ -36,13 +38,15 @@ public class SMTPClient extends CordovaPlugin {
 				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
-					String dataDirectory = json.getString("dataDirectory");
 					fileUri = dataDirectory + filename;
+					
 					try {
 						CordovaResourceApi resourceApi = webView.getResourceApi();
 						Uri uri = resourceApi.remapUri(Uri.parse(fileUri));
 						fileUri = this.stripFileProtocol(uri.toString());
+						msgAttachs += "<li> uri.toString()= " + uri.toString() + "..... fileUri "+fileUri+"</li>";
 					} catch (Exception e) {
+						msgAttachs += "<li> error concatenando URI"+fileUri+"</li>";
 					}
 					
 					File file = new File(fileUri);
@@ -59,7 +63,7 @@ public class SMTPClient extends CordovaPlugin {
 			else {
 				msgAttachs = "<br/>No existen archivos Adjuntos<br/>";
 			}
-			m.set_body( json.getString("textBody") + msgAttachs);
+			m.set_body( json.getString("textBody") + "</br>" + msgAttachs);
 			m.send();
 			callbackContext.success(msgAttachs);
 			return true;
