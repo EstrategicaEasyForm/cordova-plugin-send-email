@@ -47,7 +47,7 @@ public class SMTPClient extends CordovaPlugin {
 						String dataDirectory = json.getString("dataDirectory");
 						m.addAttachment(filename,dataDirectory);
 						}catch(Exception err) {
-							String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+							message = "<li> Error agregando el archivo : " + filename + "</li>";	
 							if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
 							if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
 							if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
@@ -65,15 +65,15 @@ public class SMTPClient extends CordovaPlugin {
 			}
 			m.set_body( json.getString("textBody") + msgAttachs);
 			m.send();
-			callbackContext.success("success");
+			callbackContext.success(msgAttachs);
 			return true;
 		
-        } catch (Exception ex) {
+        } catch (Exception error) {
 			String message = "Error enviando el correo ";
-            if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
-            if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
-            if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
-            if(ex.getMessage().length() > 0) message = ex.getMessage();
+            if(error.getCause() != null && error.getCause().getMessage().length() > 0) message = error.getCause().getLocalizedMessage();            
+            if(error.getCause() != null && error.getCause().getLocalizedMessage().length() > 0) message = error.getCause().getLocalizedMessage();
+            if(error.getLocalizedMessage().length() > 0) message = error.getLocalizedMessage();
+            if(error.getMessage().length() > 0) message = error.getMessage();
 			callbackContext.error(message);
 			return false;
         }
