@@ -98,10 +98,10 @@ public class SMTPClient extends CordovaPlugin {
 		
         } catch (Exception error) {
 			String message = "Error enviando el correo ";
-            if(error.getCause() != null && error.getCause().getMessage().length() > 0) message = error.getCause().getLocalizedMessage();            
-            if(error.getCause() != null && error.getCause().getLocalizedMessage().length() > 0) message = error.getCause().getLocalizedMessage();
-            if(error.getLocalizedMessage().length() > 0) message = error.getLocalizedMessage();
-            if(error.getMessage().length() > 0) message = error.getMessage();
+            if(error.getCause() != null && error.getCause().getMessage().length() > 0) message += error.getCause().getLocalizedMessage();            
+            if(error.getCause() != null && error.getCause().getLocalizedMessage().length() > 0) message += error.getCause().getLocalizedMessage();
+            if(error.getLocalizedMessage().length() > 0) message += error.getLocalizedMessage();
+            if(error.getMessage().length() > 0) message += error.getMessage();
 			callbackContext.error(message);
 			return false;
         }
