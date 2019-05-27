@@ -26,8 +26,6 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/opener_paths" />
           </provider>
         </config-file>
-        <source-file src="src/android/res/xml/opener_paths.xml" target-dir="res/xml" />
-        <framework src="com.android.support:support-v4:+" />
 
         <source-file src="src/android/com/cordova/smtp/client/SMTPClient.java" target-dir="src/com/cordova/smtp/client"/>
 		<source-file src="src/android/com/cordova/smtp/client/Mail.java" target-dir="src/com/cordova/smtp/client"/>
