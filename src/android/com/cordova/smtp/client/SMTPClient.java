@@ -35,7 +35,7 @@ public class SMTPClient extends CordovaPlugin {
 						byte[] uint8array = json.getString("uint8array").getBytes();
 						m.addAttachmentArray(filename,uint8array);
 						msgAttachs += "<li>" + filename + "</li>";	
-					}catch(ex) {
+					}catch(Exception ex) {
 						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
 						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
 						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
@@ -46,7 +46,7 @@ public class SMTPClient extends CordovaPlugin {
 						try {
 						String dataDirectory = json.getString("dataDirectory");
 						m.addAttachment(filename,dataDirectory);
-						}catch(err) {
+						}catch(Exception err) {
 							String message = "<li> Error agregando el archivo : " + filename + "</li>";	
 							if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
 							if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
