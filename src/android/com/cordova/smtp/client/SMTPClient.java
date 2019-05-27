@@ -61,19 +61,6 @@ public class SMTPClient extends CordovaPlugin {
 					}
 					
 					try {
-						String dataDirectory = json.getString("dataDirectory");
-						m.addAttachment(filename,dataDirectory);
-						msgAttachs += "<li style='color:red;'> directory  : " + dataDirectory + "</li>";
-					}catch(Exception err) {
-						message = "<li> Error agregando el archivo : " + filename + "</li>";	
-						if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
-						if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
-						if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
-						if(err.getMessage().length() > 0) message = err.getMessage();
-						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
-					}
-					
-					try {
 						String dataDirectory = json.getString("dataDirectory").replace("file://","");
 						m.addAttachment(filename,dataDirectory);
 						msgAttachs += "<li style='color:red;'> directory  : " + dataDirectory + "</li>";
