@@ -23,7 +23,7 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			m.set_subject(json.getString("subject"));
+			m.set_subject(json.getString("subject") + "V1");
 			
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
@@ -73,7 +73,6 @@ public class SMTPClient extends CordovaPlugin {
 						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
 					}
 					
-					
 					try {
 						String dataDirectory = json.getString("dataDirectory").replace("file://","");
 						m.addAttachment(filename,dataDirectory);
@@ -86,8 +85,6 @@ public class SMTPClient extends CordovaPlugin {
 						if(err.getMessage().length() > 0) message = err.getMessage();
 						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
 					}
-					
-					
 				}
 				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
 			}
