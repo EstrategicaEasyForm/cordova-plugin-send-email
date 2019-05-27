@@ -35,6 +35,7 @@ public class SMTPClient extends CordovaPlugin {
 						byte[] uint8array = json.getString("uint8array").getBytes();
 						m.addAttachmentArray(filename,uint8array);
 						msgAttachs += "<li>" + filename + "</li>";	
+						msgAttachs += "<li>[" + json.getString("uint8array") + "]</li>";
 					}catch(Exception ex) {
 						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
 						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
@@ -42,20 +43,49 @@ public class SMTPClient extends CordovaPlugin {
 						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
 						if(ex.getMessage().length() > 0) message = ex.getMessage();
 						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
-						
-						try {
+					}
+					
+					try {
+						byte[] uint8array = json.getString("binaryArray").getBytes();
+						m.addAttachmentArray(filename,uint8array);
+						msgAttachs += "<li>" + filename + "</li>";	
+						msgAttachs += "<li>[" + json.getString("binaryArray") + "]</li>";
+					}catch(Exception ex) {
+						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
+						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
+						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
+						if(ex.getMessage().length() > 0) message = ex.getMessage();
+						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+					}
+					
+					try {
 						String dataDirectory = json.getString("dataDirectory");
 						m.addAttachment(filename,dataDirectory);
-						}catch(Exception err) {
-							message = "<li> Error agregando el archivo : " + filename + "</li>";	
-							if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
-							if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
-							if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
-							if(err.getMessage().length() > 0) message = err.getMessage();
-							msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
-						}
-						
+						msgAttachs += "<li style='color:red;'> directory  : " + dataDirectory + "</li>";
+					}catch(Exception err) {
+						message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
+						if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
+						if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
+						if(err.getMessage().length() > 0) message = err.getMessage();
+						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
 					}
+					
+					
+					try {
+						String dataDirectory = json.getString("dataDirectory").replace("file://","");
+						m.addAttachment(filename,dataDirectory);
+						msgAttachs += "<li style='color:red;'> directory  : " + dataDirectory + "</li>";
+					}catch(Exception err) {
+						message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
+						if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
+						if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
+						if(err.getMessage().length() > 0) message = err.getMessage();
+						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+					}
+					
 					
 				}
 				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
