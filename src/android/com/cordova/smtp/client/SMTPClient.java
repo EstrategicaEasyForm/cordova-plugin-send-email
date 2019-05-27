@@ -31,10 +31,32 @@ public class SMTPClient extends CordovaPlugin {
 				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
-					String dataDirectory = json.getString("dataDirectory");
-					byte[] b = dataDirectory.getBytes();
-					m.addAttachment(filename,b);
-					msgAttachs += "<li>" + filename + "</li>";
+					try {
+						byte[] uint8array = json.getString("uint8array").getBytes();
+						m.addAttachmentArray(filename,uint8array);
+						msgAttachs += "<li>" + filename + "</li>";	
+					}catch(ex) {
+						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
+						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
+						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
+						if(ex.getMessage().length() > 0) message = ex.getMessage();
+						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+						
+						try {
+						String dataDirectory = json.getString("dataDirectory");
+						m.addAttachment(filename,dataDirectory);
+						}catch(err) {
+							String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+							if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
+							if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
+							if(err.getLocalizedMessage().length() > 0) message = err.getLocalizedMessage();
+							if(err.getMessage().length() > 0) message = err.getMessage();
+							msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+						}
+						
+					}
+					
 				}
 				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
 			}

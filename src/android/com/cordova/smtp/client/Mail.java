@@ -122,15 +122,22 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
-    public void addAttachment(String filename, byte[] arrayByte) throws Exception {
+    public void addAttachmentArray(String filename, byte[] arrayByte) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
         DataSource source = new ByteArrayDataSource(arrayByte, "application/pdf");
-		//DataSource source = new FileDataSource(filename);
-        //messageBodyPart.setHeader("Content-Type: application/pdf; name="+filename, "base64");
+		//messageBodyPart.setHeader("Content-Type: application/pdf; name="+filename, "base64");
         //messageBodyPart.setHeader("Content-Transfer-Encoding", "base64");
         messageBodyPart.setDataHandler(new DataHandler(source));
         messageBodyPart.setFileName(filename);
 
+        _multipart.addBodyPart(messageBodyPart);
+    }
+	
+	public void addAttachment(String filename, String directory) throws Exception {
+        BodyPart messageBodyPart = new MimeBodyPart();
+    	DataSource source = new FileDataSource(directory + filename);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(filename);
         _multipart.addBodyPart(messageBodyPart);
     }
 
