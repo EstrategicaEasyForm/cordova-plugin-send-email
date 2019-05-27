@@ -33,6 +33,7 @@ public class SMTPClient extends CordovaPlugin {
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
 					try {
+						filename =  "uint8array" + filename;
 						byte[] uint8array = json.getString("uint8array").getBytes();
 						m.addAttachmentArray(filename,uint8array);
 						msgAttachs += "<li>" + filename + "</li>";	
@@ -47,6 +48,8 @@ public class SMTPClient extends CordovaPlugin {
 					}
 					
 					try {
+						filename = attachments.getString(i);
+						filename =  "binaryArray" + filename;
 						byte[] uint8array = json.getString("binaryArray").getBytes();
 						m.addAttachmentArray(filename,uint8array);
 						msgAttachs += "<li>" + filename + "</li>";	
@@ -61,7 +64,9 @@ public class SMTPClient extends CordovaPlugin {
 					}
 					
 					try {
-						String dataDirectory = json.getString("dataDirectory").replace("file://","");
+						filename = attachments.getString(i);
+						//String dataDirectory = json.getString("dataDirectory").replace("file://","");
+						String dataDirectory = "/data/user/0/io.ionic.starter/files/";
 						m.addAttachment(filename,dataDirectory);
 						msgAttachs += "<li style='color:red;'> directory  : " + dataDirectory + "</li>";
 					}catch(Exception err) {
