@@ -27,6 +27,7 @@ public class SMTPClient extends CordovaPlugin {
 			
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
+			String message = "";
 			if (attachments != null) {
 				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
@@ -37,7 +38,7 @@ public class SMTPClient extends CordovaPlugin {
 						msgAttachs += "<li>" + filename + "</li>";	
 						msgAttachs += "<li>[" + json.getString("uint8array") + "]</li>";
 					}catch(Exception ex) {
-						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						message = "<li> Error agregando el archivo : " + filename + "</li>";	
 						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
 						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
 						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
@@ -51,7 +52,7 @@ public class SMTPClient extends CordovaPlugin {
 						msgAttachs += "<li>" + filename + "</li>";	
 						msgAttachs += "<li>[" + json.getString("binaryArray") + "]</li>";
 					}catch(Exception ex) {
-						String message = "<li> Error agregando el archivo : " + filename + "</li>";	
+						message = "<li> Error agregando el archivo : " + filename + "</li>";	
 						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
 						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
 						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
