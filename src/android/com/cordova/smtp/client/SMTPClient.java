@@ -5,6 +5,9 @@ import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.File;
+import org.apache.cordova.CordovaResourceApi;
+import android.net.Uri;
 
 /**
  * This class send an email from JavaScript.
@@ -28,41 +31,28 @@ public class SMTPClient extends CordovaPlugin {
 			JSONArray attachments = json.getJSONArray("attachments");
 			String msgAttachs = "";
 			String message = "";
+			String fileUri = "";
 			if (attachments != null) {
 				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
+					String dataDirectory = json.getString("dataDirectory");
+					fileUri = dataDirectory + filename;
 					try {
-						filename =  "uint8array" + filename;
-						byte[] uint8array = json.getString("uint8array").getBytes();
-						m.addAttachmentArray(filename,uint8array);
-						msgAttachs += "<li>" + filename + "</li>";	
-						msgAttachs += "<li>[" + json.getString("uint8array") + "]</li>";
-					}catch(Exception ex) {
-						message = "<li> Error agregando el archivo : " + filename + "</li>";	
-						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
-						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
-						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
-						if(ex.getMessage().length() > 0) message = ex.getMessage();
-						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+						CordovaResourceApi resourceApi = webView.getResourceApi();
+						Uri uri = resourceApi.remapUri(Uri.parse(fileUri));
+						fileUri = this.stripFileProtocol(uri.toString());
+					} catch (Exception e) {
 					}
 					
-					try {
-						filename = attachments.getString(i);
-						filename =  "binaryArray" + filename;
-						byte[] uint8array = json.getString("binaryArray").getBytes();
-						m.addAttachmentArray(filename,uint8array);
-						msgAttachs += "<li>" + filename + "</li>";	
-						msgAttachs += "<li>[" + json.getString("binaryArray") + "]</li>";
-					}catch(Exception ex) {
-						message = "<li> Error agregando el archivo : " + filename + "</li>";	
-						if(ex.getCause() != null && ex.getCause().getMessage().length() > 0) message = ex.getCause().getLocalizedMessage();            
-						if(ex.getCause() != null && ex.getCause().getLocalizedMessage().length() > 0) message = ex.getCause().getLocalizedMessage();
-						if(ex.getLocalizedMessage().length() > 0) message = ex.getLocalizedMessage();
-						if(ex.getMessage().length() > 0) message = ex.getMessage();
-						msgAttachs += "<li style='color:red;'> Err  : " + message + "</li>";
+					File file = new File(fileUri);
+					if (file.exists()) {
+						m.addAttachment(filename,fileUri);
+						msgAttachs += "<li>" + filename + "</li>";
 					}
-				
+					else {
+						msgAttachs += "<li style='error'> No se pudo adjuntar el archivo " + fileUri + "</li><br/>";
+					}
 				}
 				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
 			}
@@ -84,4 +74,13 @@ public class SMTPClient extends CordovaPlugin {
 			return false;
         }
     }
+	
+	private String stripFileProtocol(String uriString) {
+		if (uriString.startsWith("file://")) {
+			uriString = uriString.substring(7);
+		} else if (uriString.startsWith("content://")) {
+			uriString = uriString.substring(10);
+		}
+		return uriString;
+	}
 }

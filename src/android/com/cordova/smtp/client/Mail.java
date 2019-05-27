@@ -133,9 +133,9 @@ public class Mail extends javax.mail.Authenticator {
         _multipart.addBodyPart(messageBodyPart);
     }
 	
-	public void addAttachment(String filename, String directory) throws Exception {
+	public void addAttachment(String filename, String fileUri) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
-    	DataSource source = new FileDataSource(directory + filename);
+    	DataSource source = new FileDataSource(fileUri);
         messageBodyPart.setDataHandler(new DataHandler(source));
         messageBodyPart.setFileName(filename);
         _multipart.addBodyPart(messageBodyPart);
