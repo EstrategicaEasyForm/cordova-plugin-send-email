@@ -26,7 +26,7 @@ public class SMTPClient extends CordovaPlugin {
 			m.set_cc(ccArr);
 			m.set_host(json.getString("smtp"));
 			m.set_from(json.getString("emailFrom"));
-			m.set_subject(json.getString("subject") + "V1");
+			m.set_subject(json.getString("subject"));
 			
 			
 			String dataDirectory = json.getString("dataDirectory");
