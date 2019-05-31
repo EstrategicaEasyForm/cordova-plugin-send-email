@@ -35,7 +35,6 @@ public class SMTPClient extends CordovaPlugin {
 			String message = "";
 			String fileUri = "";
 			if (attachments != null) {
-				msgAttachs = "<br/>Archivos Adjuntos<br/><ui>";
 				for (int i = 0; i < attachments.length(); i++) {
 					String filename = attachments.getString(i);
 					fileUri = dataDirectory + filename;
@@ -44,36 +43,32 @@ public class SMTPClient extends CordovaPlugin {
 						CordovaResourceApi resourceApi = webView.getResourceApi();
 						Uri uri = resourceApi.remapUri(Uri.parse(fileUri));
 						fileUri = this.stripFileProtocol(uri.toString());
-						msgAttachs += "<li> uri.toString()= " + uri.toString() + "..... fileUri "+fileUri+"</li>";
 					} catch (Exception e) {
-						msgAttachs += "<li> error concatenando URI"+fileUri+"</li>";
-					}
 					
+					}
 					File file = new File(fileUri);
 					if (file.exists()) {
 						m.addAttachment(filename,fileUri);
-						msgAttachs += "<li>" + filename + "</li>";
 					}
 					else {
 						msgAttachs += "<li style='error'> No se pudo adjuntar el archivo " + fileUri + "</li><br/>";
 					}
 				}
-				msgAttachs += "</ui><br/> Total adjuntos : " + attachments.length() + "<br/>";
 			}
 			else {
 				msgAttachs = "<br/>No existen archivos Adjuntos<br/>";
 			}
 			m.set_body( json.getString("textBody") + "</br>" + msgAttachs);
 			m.send();
-			callbackContext.success(msgAttachs);
+			callbackContext.success();
 			return true;
 		
         } catch (Exception error) {
 			String message = "Error enviando el correo ";
-            if(error.getCause() != null && error.getCause().getMessage().length() > 0) message += error.getCause().getLocalizedMessage();            
-            if(error.getCause() != null && error.getCause().getLocalizedMessage().length() > 0) message += error.getCause().getLocalizedMessage();
-            if(error.getLocalizedMessage().length() > 0) message += error.getLocalizedMessage();
-            if(error.getMessage().length() > 0) message += error.getMessage();
+            if(error.getCause() != null && error.getCause().getMessage().length() > 0) message = error.getCause().getLocalizedMessage();            
+            if(error.getCause() != null && error.getCause().getLocalizedMessage().length() > 0) message = error.getCause().getLocalizedMessage();
+            if(error.getLocalizedMessage().length() > 0) message = error.getLocalizedMessage();
+            if(error.getMessage().length() > 0) message = error.getMessage();
 			callbackContext.error(message);
 			return false;
         }
