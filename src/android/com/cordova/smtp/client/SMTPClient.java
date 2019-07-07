@@ -49,6 +49,7 @@ public class SMTPClient extends CordovaPlugin {
 					File file = new File(fileUri);
 					if (file.exists()) {
 						m.addAttachment(filename,fileUri);
+						msgAttachs += "<li style='info'> 1 archivo adjunto: " + filename + "</li><br/>";
 					}
 					else {
 						msgAttachs += "<li style='error'> No se pudo adjuntar el archivo " + filename + "</li><br/>";
