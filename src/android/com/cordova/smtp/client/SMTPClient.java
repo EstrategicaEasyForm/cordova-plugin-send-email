@@ -43,7 +43,7 @@ public class SMTPClient extends CordovaPlugin {
 						Uri uri = resourceApi.remapUri(Uri.parse(fileUri));
 						fileUri = this.stripFileProtocol(uri.toString());
 						msgAttachs += "<li style='error'> Archivo Adjunto: " + filename + "</li><br/>";
-					} catch (Exception e) {
+					} catch (Exception err) {
 						String message = "Error enviando el correo ";
 						if(err.getCause() != null && err.getCause().getMessage().length() > 0) message = err.getCause().getLocalizedMessage();            
 						if(err.getCause() != null && err.getCause().getLocalizedMessage().length() > 0) message = err.getCause().getLocalizedMessage();
